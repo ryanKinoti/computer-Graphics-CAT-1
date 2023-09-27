@@ -6,6 +6,7 @@ import json
 
 file_location = 'CAT-dataset.tar.gz'
 project_folder = os.getcwd()
+extracted_folder = os.path.join(project_folder, '1.1')
 
 if not os.path.isfile(file_location):
     print("Invalid file location. Please enter a valid tar.gz file location.")
@@ -15,14 +16,17 @@ if not file_location.endswith('.tar.gz'):
     print("Invalid file type. Please enter a valid tar.gz file.")
     exit(1)
 
-try:
-    # Open the tar.gz file in read mode
-    with tarfile.open(file_location, 'r:gz') as file:
-        # Extract all contents into the project folder
-        file.extractall(project_folder)
-    print(f"Contents extracted successfully to {project_folder}")
-except Exception as e:
-    print(f"An error occurred while extracting the file: {e}")
+if os.path.exists(extracted_folder):
+    print(f"The folder {extracted_folder} already exists. Skipping extraction.")
+else:
+    try:
+        # Open the tar.gz file in read mode
+        with tarfile.open(file_location, 'r:gz') as file:
+            # Extract all contents into the project folder
+            file.extractall(project_folder)
+        print(f"Contents extracted successfully to {project_folder}")
+    except Exception as e:
+        print(f"An error occurred while extracting the file: {e}")
 
 
 def read_jsonl_files(directory):
@@ -42,7 +46,7 @@ def read_jsonl_files(directory):
                 for line in file:
                     # Parse each line as a JSON object and append it to the data list
                     data.append(json.loads(line))
-    return data, filenames
+    return data
 
 
 def load_data(project_directory, jsonl_subfolder='1.1/data'):

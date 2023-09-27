@@ -1,3 +1,4 @@
+import json
 import os
 from collections import defaultdict
 
@@ -52,5 +53,21 @@ def generate_excel_files(jsonl_dataset):
             print(f'File {filename} has been created.')
 
 
-# Call the function with the all_data array
 generate_excel_files(all_data)
+
+# """a simple print output to see the dataset arrangements"""
+# try:
+#     all_data = load_data(project_folder)
+#     # Now you can use the all_data array in this file
+#     if len(all_data) >= 3:
+#         # Print the first 3 elements of the list
+#         print(f"First 3 of {len(all_data)} elements of the array:")
+#         for i in range(3):
+#             print(json.dumps(all_data[i], indent=4))
+#     else:
+#         print(f"There are less than 3 elements in the array. Total elements: {len(all_data)}")
+#         # Print all available elements in the list
+#         for element in all_data:
+#             print(json.dumps(element, indent=4))
+# except ValueError as e:
+#     print(e)

@@ -5,6 +5,7 @@ import json
 """Extraction of the zipp files and sorting everything out"""
 
 file_location = 'CAT-dataset.tar.gz'
+project_folder = os.getcwd()
 
 if not os.path.isfile(file_location):
     print("Invalid file location. Please enter a valid tar.gz file location.")
@@ -13,8 +14,6 @@ if not os.path.isfile(file_location):
 if not file_location.endswith('.tar.gz'):
     print("Invalid file type. Please enter a valid tar.gz file.")
     exit(1)
-
-project_folder = os.getcwd()
 
 try:
     # Open the tar.gz file in read mode
@@ -28,17 +27,22 @@ except Exception as e:
 
 def read_jsonl_files(directory):
     data = []
+    filenames = []
+
     # List all files in the specified directory
     for filename in os.listdir(directory):
+
         # Check if the file has a .jsonl extension
         if filename.endswith('.jsonl'):
             filepath = os.path.join(directory, filename)
+            filenames.append(filename)
+
             # Open each jsonl file and read its contents
             with open(filepath, 'r', encoding='utf-8') as file:
                 for line in file:
                     # Parse each line as a JSON object and append it to the data list
                     data.append(json.loads(line))
-    return data
+    return data, filenames
 
 
 def load_data(project_directory, jsonl_subfolder='1.1/data'):

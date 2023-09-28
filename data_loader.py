@@ -1,32 +1,39 @@
 import os
 import tarfile
 import json
+import logging
+import tkinter as tk
+from tkinter import filedialog
 
-"""Extraction of the zipp files and sorting everything out"""
+logging.basicConfig(level=logging.INFO)
 
-file_location = 'CAT-dataset.tar.gz'
-project_folder = os.getcwd()
-extracted_folder = os.path.join(project_folder, '1.1')
 
-if not os.path.isfile(file_location):
-    print("Invalid file location. Please enter a valid tar.gz file location.")
-    exit(1)
+def select_file():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    file_path = filedialog.askopenfilename(title="Select a .tar.gz file", filetypes=[("tar.gz files", "*.tar.gz")])
+    root.destroy()
 
-if not file_location.endswith('.tar.gz'):
-    print("Invalid file type. Please enter a valid tar.gz file.")
-    exit(1)
+    if not file_path:
+        logging.warning("No file selected.")
+        return None
 
-if os.path.exists(extracted_folder):
-    print(f"The folder {extracted_folder} already exists. Skipping extraction.")
-else:
-    try:
-        # Open the tar.gz file in read mode
-        with tarfile.open(file_location, 'r:gz') as file:
-            # Extract all contents into the project folder
-            file.extractall(project_folder)
-        print(f"Contents extracted successfully to {project_folder}")
-    except Exception as e:
-        print(f"An error occurred while extracting the file: {e}")
+    return file_path
+
+
+def dataset_extraction(file_location, project_folder, extracted_folder):
+    if not file_location.endswith('.tar.gz'):
+        raise Exception(f"Invalid file type. Kindly ensure {file_location} is a .tar.gz file")
+
+    if os.path.exists(extracted_folder):
+        logging.info(f"The folder {extracted_folder} already exists. Skipping extraction.")
+    else:
+        try:
+            with tarfile.open(file_location, 'r:gz') as file:
+                file.extractall(project_folder)
+            logging.info(f'Contents of {file_location} extracted successfully to {project_folder}')
+        except Exception as e:
+            logging.error(f'An error {e} has occurred')
 
 
 def read_jsonl_files(directory):
@@ -49,8 +56,4 @@ def read_jsonl_files(directory):
     return data
 
 
-def load_data(project_directory, jsonl_subfolder='1.1/data'):
-    jsonl_folder = os.path.join(project_directory, jsonl_subfolder)
-    if not os.path.isdir(jsonl_folder):
-        raise ValueError("Invalid folder location. Please enter a valid sub-folder name.")
-    return read_jsonl_files(jsonl_folder)
+

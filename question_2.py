@@ -1,11 +1,6 @@
 import json
 import os
 
-from data_loader import load_data
-
-project_folder = os.getcwd()
-all_data = load_data(project_folder)
-
 
 def generate_partitioned_jsonl_files(jsonl_dataset, needed_languages, output_folder='answers/question_2'):
     if not os.path.exists(output_folder):
@@ -33,7 +28,3 @@ def generate_partitioned_jsonl_files(jsonl_dataset, needed_languages, output_fol
                 for data in datasets:
                     file.write(json.dumps(data) + '\n')
             print(f'File {filename} has been created.')
-
-
-languages = ['en', 'sw', 'de']
-generate_partitioned_jsonl_files(all_data, languages)

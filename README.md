@@ -22,3 +22,11 @@ QUESTION 2 - Working with Files (10 Marks)
 3. Upload all the files to your Google Drive Backup Folder.
    a. Upload all the changes to GitHub
    b. Write a clean readme.md file
+
+Packages needed:
+1. os
+2. tarfile
+3. json
+4. logging
+5. tkinter
+6. collections

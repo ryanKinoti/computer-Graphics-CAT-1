@@ -13,7 +13,6 @@ def load_data(project_directory, jsonl_subfolder='1.1/data'):
 def main():
     """declarations"""
     project_folder = os.getcwd()
-    all_data = load_data(project_folder)
 
     """data extraction"""
     logging.info('Select your zipped dataset source')
@@ -27,6 +26,7 @@ def main():
         logging.error(f'An error {e} has occurred')
         exit(1)
 
+    all_data = load_data(project_folder)
     """question 1"""
     try:
         print('\n')
